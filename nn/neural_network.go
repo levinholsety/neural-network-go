@@ -113,7 +113,7 @@ func (p *NeuralNetwork) PrintOutputValues() {
 	}
 }
 
-func (p *NeuralNetwork) Save(w io.Writer) {
+func (p *NeuralNetwork) Save(w io.Writer) (err error) {
 	mnn := &model.NeuralNetwork{
 		LearningRate: p.learningRate,
 		Momentum:     p.momentum,
@@ -148,8 +148,12 @@ func (p *NeuralNetwork) Save(w io.Writer) {
 			Weight: float64(conn.Weight),
 		})
 	}
-	data, _ := json.MarshalIndent(mnn, "", "    ")
-	w.Write(data)
+	data, err := json.Marshal(mnn)
+	if err != nil {
+		return
+	}
+	_, err = w.Write(data)
+	return
 }
 
 func (p *NeuralNetwork) Load(r io.Reader) (err error) {
