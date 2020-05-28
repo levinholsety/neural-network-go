@@ -1,6 +1,8 @@
 package nn
 
 import (
+	"math"
+
 	"github.com/levinholsety/common-go/num"
 )
 
@@ -26,7 +28,7 @@ type ActivationFunction interface {
 type Sigmoid struct{}
 
 func (p *Sigmoid) Func(x num.Tensor) num.Tensor {
-	return num.Scalar(1).Div(num.Scalar(1).Add(x.Negative().Exp()))
+	return num.Scalar(1).Div(num.Scalar(1).Add(x.Negative().UO(math.Exp)))
 }
 
 func (p *Sigmoid) PDFunc(x num.Tensor) num.Tensor {
@@ -36,7 +38,7 @@ func (p *Sigmoid) PDFunc(x num.Tensor) num.Tensor {
 type Tanh struct{}
 
 func (p *Tanh) Func(x num.Tensor) num.Tensor {
-	return x.Exp().Sub(x.Negative().Exp()).Div(x.Exp().Add(x.Negative().Exp()))
+	return x.UO(math.Exp).Sub(x.Negative().UO(math.Exp)).Div(x.UO(math.Exp).Add(x.Negative().UO(math.Exp)))
 }
 
 func (p *Tanh) PDFunc(x num.Tensor) num.Tensor {

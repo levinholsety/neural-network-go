@@ -7,7 +7,7 @@ import (
 
 func newNeuronBase(name string, bias num.Scalar, actFuncName string) *NeuronBase {
 	return &NeuronBase{
-		id:          int(comm.UniqueID()),
+		id:          int(comm.GenerateID()),
 		name:        name,
 		bias:        bias,
 		actFuncName: actFuncName,

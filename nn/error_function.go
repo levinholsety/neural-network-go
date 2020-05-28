@@ -1,6 +1,10 @@
 package nn
 
-import "github.com/levinholsety/common-go/num"
+import (
+	"math"
+
+	"github.com/levinholsety/common-go/num"
+)
 
 func NewErrorFunction(name string) ErrorFunction {
 	return efMap[name]
@@ -34,7 +38,7 @@ func (p *MSE) PDFunc(target, output num.Tensor) num.Tensor {
 type CrossEntropy struct{}
 
 func (p *CrossEntropy) Func(target, output num.Tensor) num.Tensor {
-	return target.Mul(output.Log()).Negative()
+	return target.Mul(output.UO(math.Log)).Negative()
 }
 
 func (p *CrossEntropy) PDFunc(target, output num.Tensor) num.Tensor {
